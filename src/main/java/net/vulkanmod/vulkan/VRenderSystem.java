@@ -35,6 +35,7 @@ public abstract class VRenderSystem {
     public static int colorMask = PipelineState.ColorMask.getColorMask(true, true, true, true);
 
     public static boolean cull = true;
+    public static boolean invertCull = false;
 
     public static boolean logicOp = false;
     public static int logicOpFun = 0;

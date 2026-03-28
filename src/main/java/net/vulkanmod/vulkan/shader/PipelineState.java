@@ -35,7 +35,7 @@ public class PipelineState {
     }
 
     public static int getAssemblyRasterState() {
-        return AssemblyRasterState.encode(VRenderSystem.cull, VRenderSystem.topology, VRenderSystem.polygonMode);
+        return AssemblyRasterState.encode(VRenderSystem.cull, VRenderSystem.invertCull, VRenderSystem.topology, VRenderSystem.polygonMode);
     }
 
     public static int getDepthState() {
@@ -303,9 +303,9 @@ public class PipelineState {
         public static final int CULL_MODE_BITS = 2;
         public static final int CULL_MODE_MASK = 0b11;
 
-        public static int encode(boolean cull, int topology, int polygonMode) {
+        public static int encode(boolean cull, boolean invertCull, int topology, int polygonMode) {
             int state = (polygonMode | (topology << TOPOLOGY_OFFSET));
-            state |= ((cull ? VK_CULL_MODE_BACK_BIT : VK_CULL_MODE_NONE) << CULL_MODE_OFFSET);
+            state |= ((cull ? (invertCull ? VK_CULL_MODE_FRONT_BIT : VK_CULL_MODE_BACK_BIT) : VK_CULL_MODE_NONE) << CULL_MODE_OFFSET);
 
             return state;
         }
