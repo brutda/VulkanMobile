@@ -26,6 +26,8 @@ public abstract class UpdateChecker {
 
                 URL url = new URL(req);
                 HttpURLConnection http = (HttpURLConnection)url.openConnection();
+                http.setConnectTimeout(10000);
+                http.setReadTimeout(10000);
                 var inputStream = http.getInputStream();
 
                 JsonObject data = JsonParser.parseString("{ versions: " + new String(inputStream.readAllBytes()) + "}").getAsJsonObject();
