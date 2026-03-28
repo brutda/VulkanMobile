@@ -38,6 +38,13 @@ dependencies {
 	includeModule("fabric-block-view-api-v2")
 	includeModule("fabric-lifecycle-events-v1")
 	includeModule("fabric-transitive-access-wideners-v1")
+
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+}
+
+test {
+	useJUnitPlatform()
 }
 
 project.ext.lwjglVersion = "3.3.3"
