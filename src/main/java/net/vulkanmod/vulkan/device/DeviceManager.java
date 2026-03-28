@@ -167,16 +167,19 @@ public abstract class DeviceManager {
                 queueCreateInfo.pQueuePriorities(stack.floats(1.0f));
             }
 
+            if (!device.isDrawIndirectSupported()) {
+                Initializer.CONFIG.indirectDraw = false;
+            }
+
             VkPhysicalDeviceVulkan11Features deviceVulkan11Features = VkPhysicalDeviceVulkan11Features.calloc(stack);
             deviceVulkan11Features.sType$Default();
-            deviceVulkan11Features.shaderDrawParameters(device.isDrawIndirectSupported());
+            deviceVulkan11Features.shaderDrawParameters(Initializer.CONFIG.indirectDraw);
 
             VkPhysicalDeviceFeatures2 deviceFeatures = VkPhysicalDeviceFeatures2.calloc(stack);
             deviceFeatures.sType$Default();
             deviceFeatures.features().samplerAnisotropy(device.availableFeatures.features().samplerAnisotropy());
             deviceFeatures.features().logicOp(device.availableFeatures.features().logicOp());
-            // TODO: Disable indirect draw option if unsupported.
-            deviceFeatures.features().multiDrawIndirect(device.isDrawIndirectSupported());
+            deviceFeatures.features().multiDrawIndirect(Initializer.CONFIG.indirectDraw);
 
             // Must not set line width to anything other than 1.0 if this is not supported
             if (device.availableFeatures.features().wideLines()) {
