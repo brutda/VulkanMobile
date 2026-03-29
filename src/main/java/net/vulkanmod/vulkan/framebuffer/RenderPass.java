@@ -79,8 +79,8 @@ public class RenderPass {
                                .samples(VK_SAMPLE_COUNT_1_BIT)
                                .loadOp(depthAttachmentInfo.loadOp)
                                .storeOp(depthAttachmentInfo.storeOp)
-                               .stencilLoadOp(VK_ATTACHMENT_LOAD_OP_DONT_CARE)
-                               .stencilStoreOp(VK_ATTACHMENT_STORE_OP_DONT_CARE)
+                               .stencilLoadOp(depthAttachmentInfo.loadOp) // Match loadOp for stencil
+                               .stencilStoreOp(depthAttachmentInfo.storeOp) // Match storeOp for stencil
                                .initialLayout(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL)
                                .finalLayout(depthAttachmentInfo.finalLayout);
 
