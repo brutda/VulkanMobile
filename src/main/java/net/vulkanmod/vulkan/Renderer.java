@@ -723,11 +723,18 @@ public class Renderer {
 
             int attachmentsCount = attachments == (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT) ? 2 : 1;
             final VkClearAttachment.Buffer pAttachments = VkClearAttachment.malloc(attachmentsCount, stack);
+            Framebuffer framebuffer = Renderer.getInstance().boundFramebuffer;
+            int depthAspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+            if (framebuffer != null && framebuffer.getDepthAttachment() != null &&
+                (framebuffer.getDepthAttachment().aspect & VK_IMAGE_ASPECT_STENCIL_BIT) != 0) {
+                depthAspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
+            }
+
             switch (attachments) {
                 case GL_DEPTH_BUFFER_BIT -> {
 
                     VkClearAttachment clearDepth = pAttachments.get(0);
-                    clearDepth.aspectMask(VK_IMAGE_ASPECT_DEPTH_BIT);
+                    clearDepth.aspectMask(depthAspectMask);
                     clearDepth.colorAttachment(0);
                     clearDepth.clearValue(depthValue);
                 }
@@ -746,7 +753,7 @@ public class Renderer {
                     clearColor.clearValue(colorValue);
 
                     VkClearAttachment clearDepth = pAttachments.get(1);
-                    clearDepth.aspectMask(VK_IMAGE_ASPECT_DEPTH_BIT);
+                    clearDepth.aspectMask(depthAspectMask);
                     clearDepth.colorAttachment(0);
                     clearDepth.clearValue(depthValue);
                 }

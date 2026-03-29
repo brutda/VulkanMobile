@@ -36,7 +36,8 @@ public class VkGlFramebuffer {
             Renderer.setScissor(0, 0, viewWidth, viewHeight);
 
             // TODO: invert cull instead of disabling
-            VRenderSystem.disableCull();
+            VRenderSystem.cull = true;
+            VRenderSystem.invertCull = true;
         }
 
         boundFramebuffer = glFramebuffer;
@@ -57,6 +58,7 @@ public class VkGlFramebuffer {
                 Renderer.getInstance().getMainPass().rebindMainTarget();
             }
 
+            VRenderSystem.invertCull = false;
             boundFramebuffer = null;
             return;
         }
