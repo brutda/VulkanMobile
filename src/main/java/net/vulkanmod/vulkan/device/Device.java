@@ -29,7 +29,7 @@ public class Device {
     public final String vkVersion;
 
     public final VkPhysicalDeviceFeatures2 availableFeatures;
-    public final VkPhysicalDeviceVulkan11Features availableFeatures11;
+    public final VkPhysicalDeviceShaderDrawParametersFeatures availableFeaturesDrawParameters;
 
 //    public final VkPhysicalDeviceVulkan13Features availableFeatures13;
 //    public final boolean vulkan13Support;
@@ -51,20 +51,20 @@ public class Device {
         this.availableFeatures = VkPhysicalDeviceFeatures2.calloc();
         this.availableFeatures.sType$Default();
 
-        this.availableFeatures11 = VkPhysicalDeviceVulkan11Features.malloc();
-        this.availableFeatures11.sType$Default();
-        this.availableFeatures.pNext(this.availableFeatures11);
+        this.availableFeaturesDrawParameters = VkPhysicalDeviceShaderDrawParametersFeatures.malloc();
+        this.availableFeaturesDrawParameters.sType$Default();
+        this.availableFeatures.pNext(this.availableFeaturesDrawParameters);
 
         //Vulkan 1.3
 //        this.availableFeatures13 = VkPhysicalDeviceVulkan13Features.malloc();
 //        this.availableFeatures13.sType$Default();
-//        this.availableFeatures11.pNext(this.availableFeatures13.address());
+//        this.availableFeaturesDrawParameters.pNext(this.availableFeatures13.address());
 //
 //        this.vulkan13Support = this.device.getCapabilities().apiVersion == VK_API_VERSION_1_3;
 
         vkGetPhysicalDeviceFeatures2(this.physicalDevice, this.availableFeatures);
 
-        if (this.availableFeatures.features().multiDrawIndirect() && this.availableFeatures11.shaderDrawParameters())
+        if (this.availableFeatures.features().multiDrawIndirect() && this.availableFeaturesDrawParameters.shaderDrawParameters())
             this.drawIndirectSupported = true;
 
     }

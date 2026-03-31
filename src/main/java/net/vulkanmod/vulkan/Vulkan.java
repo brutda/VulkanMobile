@@ -131,7 +131,7 @@ public class Vulkan {
 
     private static StagingBuffer[] stagingBuffers;
 
-    public static boolean use24BitsDepthFormat = true;
+    public static boolean use24BitsDepthFormat = false;
     private static int DEFAULT_DEPTH_FORMAT = 0;
 
     public static void initVulkan(long window) {

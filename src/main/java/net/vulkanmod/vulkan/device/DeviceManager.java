@@ -171,9 +171,9 @@ public abstract class DeviceManager {
                 Initializer.CONFIG.indirectDraw = false;
             }
 
-            VkPhysicalDeviceVulkan11Features deviceVulkan11Features = VkPhysicalDeviceVulkan11Features.calloc(stack);
-            deviceVulkan11Features.sType$Default();
-            deviceVulkan11Features.shaderDrawParameters(Initializer.CONFIG.indirectDraw);
+            VkPhysicalDeviceShaderDrawParametersFeatures shaderDrawParametersFeatures = VkPhysicalDeviceShaderDrawParametersFeatures.calloc(stack);
+            shaderDrawParametersFeatures.sType$Default();
+            shaderDrawParametersFeatures.shaderDrawParameters(Initializer.CONFIG.indirectDraw);
 
             VkPhysicalDeviceFeatures2 deviceFeatures = VkPhysicalDeviceFeatures2.calloc(stack);
             deviceFeatures.sType$Default();
@@ -192,14 +192,14 @@ public abstract class DeviceManager {
             createInfo.sType(VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO);
             createInfo.pQueueCreateInfos(queueCreateInfos);
             createInfo.pEnabledFeatures(deviceFeatures.features());
-            createInfo.pNext(deviceVulkan11Features);
+            createInfo.pNext(shaderDrawParametersFeatures);
 
             if (Vulkan.DYNAMIC_RENDERING) {
                 VkPhysicalDeviceDynamicRenderingFeaturesKHR dynamicRenderingFeaturesKHR = VkPhysicalDeviceDynamicRenderingFeaturesKHR.calloc(stack);
                 dynamicRenderingFeaturesKHR.sType$Default();
                 dynamicRenderingFeaturesKHR.dynamicRendering(true);
 
-                deviceVulkan11Features.pNext(dynamicRenderingFeaturesKHR.address());
+                shaderDrawParametersFeatures.pNext(dynamicRenderingFeaturesKHR.address());
 
 //                //Vulkan 1.3 dynamic rendering
 //                VkPhysicalDeviceVulkan13Features deviceVulkan13Features = VkPhysicalDeviceVulkan13Features.calloc(stack);
@@ -209,7 +209,7 @@ public abstract class DeviceManager {
 //
 //                deviceVulkan13Features.dynamicRendering(true);
 //                createInfo.pNext(deviceVulkan13Features);
-//                deviceVulkan13Features.pNext(deviceVulkan11Features.address());
+//                deviceVulkan13Features.pNext(shaderDrawParametersFeatures.address());
             }
 
             createInfo.ppEnabledExtensionNames(asPointerBuffer(Vulkan.REQUIRED_EXTENSION));
